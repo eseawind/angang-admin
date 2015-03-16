@@ -1,5 +1,6 @@
 package org.plateau.angang.controllers;
 
+import org.plateau.angang.permission.annotation.Permissible;
 import org.plateau.angang.service.DemoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ public class DemoController {
 	private DemoService service;
 
 	@RequestMapping("/index")
+	@Permissible
 	public String demo() {
 		System.out.println("result is " + service.getDemoById(1));
 		return "I'm demo!";
