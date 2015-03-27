@@ -19,5 +19,12 @@ public class DemoController {
 		System.out.println("result is " + service.getDemoById(1));
 		return "I'm demo!";
 	}
+	
+	@RequestMapping("/monitor")
+	@Permissible
+	public String monitor() {
+		service.testMonitor();
+		return "I'm monitor!";
+	}
 
 }

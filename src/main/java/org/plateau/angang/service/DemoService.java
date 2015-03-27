@@ -16,5 +16,9 @@ public class DemoService {
 	public Demo getDemoById(int id) {
 		return mapper.getDemo(id);
 	}
+	
+	public void testMonitor() {
+		throw new RuntimeException();
+	}
 
 }

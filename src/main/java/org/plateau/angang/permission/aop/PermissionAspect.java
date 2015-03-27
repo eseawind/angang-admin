@@ -2,8 +2,9 @@ package org.plateau.angang.permission.aop;
 
 import java.lang.annotation.Annotation;
 
-import org.aopalliance.intercept.MethodInterceptor;
-import org.aopalliance.intercept.MethodInvocation;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.plateau.angang.permission.PermissionDeniedException;
 import org.plateau.angang.permission.PermissionSupport;
 import org.plateau.angang.permission.UserSupport;
@@ -24,7 +25,8 @@ import org.springframework.stereotype.Component;
  * @author quinn
  */
 @Component
-class PermissionAdvice implements MethodInterceptor {
+@Aspect
+public class PermissionAspect {
 
 	@Autowired
 	private PermissionSupport permissionSupport;
@@ -36,12 +38,11 @@ class PermissionAdvice implements MethodInterceptor {
 		this.permissionSupport = permissionSupport;
 	}
 
-	public Object invoke(final MethodInvocation methodInvocation)
+	@Around("org.plateau.angang.permission.aop.SystemPermissionAspect.permissionPointcut() && @annotation(permissible)")
+	public Object checkPermission(final ProceedingJoinPoint pjp, Permissible permissible)
 			throws Throwable {
-		Permissible permissible = methodInvocation.getMethod().getAnnotation(
-				Permissible.class);
 		if (permissible == null)// never happen!
-			throw new RuntimeException("Method[" + methodInvocation.getMethod()
+			throw new RuntimeException("Method[" + pjp.getSignature().getName()
 					+ "] dosn't have the annotation of Permissible");
 		if (permissible.value() == null
 				|| permissible.value().trim().length() == 0) {
@@ -52,7 +53,7 @@ class PermissionAdvice implements MethodInterceptor {
 				}
 
 				public String value() {
-					return methodInvocation.getMethod().getName();
+					return pjp.getSignature().getName();
 				}
 			};
 		}
@@ -60,7 +61,7 @@ class PermissionAdvice implements MethodInterceptor {
 			// TODO logger
 			throw new PermissionDeniedException("");
 		}
-		return methodInvocation.proceed();
+		return pjp.proceed();
 	}
 
 }
