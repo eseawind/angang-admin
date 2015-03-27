@@ -1,4 +1,4 @@
-package org.plateau.angang.permission.aop;
+package org.plateau.angang.permission.support;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;

@@ -1,4 +1,4 @@
-package org.plateau.angang.permission.aop;
+package org.plateau.angang.permission.support;
 
 import java.lang.annotation.Annotation;
 
@@ -38,7 +38,7 @@ public class PermissionAspect {
 		this.permissionSupport = permissionSupport;
 	}
 
-	@Around("org.plateau.angang.permission.aop.SystemPermissionAspect.permissionPointcut() && @annotation(permissible)")
+	@Around("org.plateau.angang.permission.support.SystemPermissionAspect.permissionPointcut() && @annotation(permissible)")
 	public Object checkPermission(final ProceedingJoinPoint pjp, Permissible permissible)
 			throws Throwable {
 		if (permissible == null)// never happen!
